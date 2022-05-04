@@ -1,0 +1,22 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Ürünler</th>
+      <th>Sipariş Tarihi</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let order of orders; let i = index">
+      <td>{{ i+1 }}</td>
+      <td>
+        <ul>
+          <li *ngFor="let basket of order.baskets">
+            {{ basket.product.name }} - {{ basket.quantity}}
+          </li>
+        </ul>
+      </td>
+      <td>{{ order.date | date:'dd.MM.yyyy' }}</td>
+    </tr>
+  </tbody>
+</table>

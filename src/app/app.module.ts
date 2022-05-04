@@ -9,7 +9,8 @@ import { ProductComponent } from './components/product/product.component';
 import { BasketComponent } from './components/basket/basket.component';
 import { PaymentComponent } from './components/payment/payment.component';
 import { ToastrModule } from 'ngx-toastr';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { OrderComponent } from './components/order/order.component'
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
     NavbarComponent,
     ProductComponent,
     BasketComponent,
-    PaymentComponent
+    PaymentComponent,
+    OrderComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +28,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
     BrowserAnimationsModule,
     ToastrModule.forRoot({
       closeButton:true,
-      progressBar:true
+      progressBar:true,
+      positionClass:"toast-bottom-right"
     })
   ],
   providers: [],

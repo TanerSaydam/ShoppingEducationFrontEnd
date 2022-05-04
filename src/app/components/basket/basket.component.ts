@@ -1,53 +1,38 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterContentChecked, AfterViewChecked, AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { BasketModel } from 'src/app/models/basket';
+import { BasketService } from 'src/app/services/basket.service';
 
 @Component({
   selector: 'app-basket',
   templateUrl: './basket.component.html',
   styleUrls: ['./basket.component.scss']
 })
-export class BasketComponent implements OnInit {
+export class BasketComponent implements OnInit, AfterContentChecked {
 
-  @Input() baskets:BasketModel[] = [];
-  @Input() total:number = 0;
+  baskets: BasketModel[] = [];
+  total: number = 0;
+
   constructor(
-    private toastrService:ToastrService
+    private toastrService: ToastrService,
+    private basketService: BasketService
   ) { }
 
   ngOnInit(): void {
+    this.baskets = this.basketService.baskets;
   }
 
-  deleteProduct(basket:BasketModel){
-    let index = this.baskets.indexOf(basket);
-    this.baskets.splice(index,1);
-//    this.total = this.total - (basket.product.price * basket.quantity);
-    this.toastrService.info(basket.product.name + " ürün sepetinizden başarıyla silindi");
+  ngAfterContentChecked(): void {
+    this.total = this.basketService.total
   }
 
-  calc(){
-    this.total = 0
-    this.baskets.forEach(element => {
-      this.total = this.total + (element.product.price * element.quantity)
-    });
-    return this.total
+  deleteProduct(basket: BasketModel) {
+    this.basketService.deleteProduct(basket);
   }
 
-  changeData(basket:BasketModel){
-    let quantity: number = parseInt((<HTMLInputElement>document.getElementById("basketQuantity-" + basket.product.name)).value);
-
-    let index = this.baskets.indexOf(basket);
-    this.baskets.splice(index,1);
-
-    basket.quantity = quantity;
-    this.baskets.push(basket);
+  changeData(basket: BasketModel, quantity:any) {
+    this.basketService.changeData(basket, quantity.value);
   }
 
-  payment(event:any){
-    if (this.total == event.total) {
-      let count = this.baskets.length;
-      this.baskets.splice(0,count);
-      this.toastrService.info("Ödeme başarılı. Siparişiniz sevk aşamasına geçti");
-    }
-  }
+
 }

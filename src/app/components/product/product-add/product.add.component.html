@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="row d-flex justify-content-center">
+    <div class="col-md-4">
+      <div class="form-group">
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Ürün Adı</label>
+          <input type="text" class="form-control" #inputName>
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Stok Adedi</label>
+          <input type="number" class="form-control" #inputQuantity>
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Birim Fiyatı</label>
+          <input type="number" class="form-control" #inputPrice>
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Ürün Resmi</label>
+          <input type="text" class="form-control" #inputImage>
+        </div>
+      </div>
+      <div class="form-group text-center">
+        <button class="btn btn-success btn-lg" (click)="add(inputName,inputQuantity,inputPrice,inputImage)">Ürünü Kaydet</button>
+      </div>
+    </div>
+  </div>
+</div>

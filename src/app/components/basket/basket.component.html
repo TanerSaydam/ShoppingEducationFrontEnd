@@ -14,7 +14,7 @@
   <tr *ngFor="let basket of baskets let index = index">
     <td>{{ index +1 }}</td>
     <td>{{ basket.product.name }}</td>
-    <td><input type="number" id="basketQuantity-{{ basket.product.name }}" (click)="changeData(basket)" min="1" class="form-control" [value]="basket.quantity"></td>
+    <td><input type="number" id="basketQuantity-{{ basket.product.name }}" #inputQuantity (click)="changeData(basket, inputQuantity)" min="1" class="form-control" [value]="basket.quantity"></td>
     <td>{{ (basket.quantity * basket.product.price) | currency: 'TRY': 'symbol-narrow':'1.2-2' }}</td>
     <td><button class="btn btn-sm btn-danger" (click)="deleteProduct(basket)">Sil</button></td>
   </tr>
@@ -24,8 +24,7 @@
     <th></th>
     <th></th>
     <th>Toplam</th>
-    <!-- <th>{{ total | currency: 'TRY': 'symbol-narrow':'1.2-2' }}</th> -->
-    <th [innerText]="calc() | currency: 'TRY': 'symbol-narrow':'1.2-2'"></th>
+    <th [innerText]="this.total | currency: 'TRY': 'symbol-narrow':'1.2-2'"></th>
     <th></th>
   </tr>
 </tfoot>
@@ -34,5 +33,5 @@
 <button class="btn btn-lg btn-success" data-bs-toggle="modal" data-bs-target="#paymentModal">Ödeme Yap</button>
 <div class="form-group">
 
-  <app-payment [total]="total" (myEvent)="payment($event)"></app-payment>
+<app-payment></app-payment>
 
