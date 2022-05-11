@@ -14,6 +14,9 @@ import { OrderComponent } from './components/order/order.component';
 import { LayoutsComponent } from './components/layouts/layouts.component';
 import { FooterComponent } from './components/layouts/footer/footer.component';
 import { NotFoundComponent } from './components/not-found/not-found.component'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ProductAddComponent } from './components/product/product-add/product-add.component';
+import { ProductUpdateComponent } from './components/product/product-update/product-update.component';
 
 @NgModule({
   declarations: [
@@ -26,11 +29,15 @@ import { NotFoundComponent } from './components/not-found/not-found.component'
     OrderComponent,
     LayoutsComponent,
     FooterComponent,
-    NotFoundComponent
+    ProductAddComponent,
+    NotFoundComponent,
+    ProductUpdateComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot({
       closeButton:true,

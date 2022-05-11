@@ -1,7 +1,8 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, AfterContentChecked } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { BasketModel } from 'src/app/models/basket';
 import { ProductModel } from 'src/app/models/product';
+import { AuthService } from 'src/app/services/auth.service';
 import { BasketService } from 'src/app/services/basket.service';
 import { ProductService } from 'src/app/services/product.service';
 
@@ -10,17 +11,25 @@ import { ProductService } from 'src/app/services/product.service';
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss'],
 })
-export class ProductComponent implements OnInit {
+export class ProductComponent implements OnInit, AfterContentChecked {
   products: ProductModel[];
+  isAuth:boolean = false;
 
   constructor(
     private toastrService:ToastrService,
     private productService:ProductService,
-    private basketService:BasketService
+    private basketService:BasketService,
+    private authService:AuthService
   ) {}
 
   ngOnInit(): void {
-    this.products = this.productService.products;
+    this.productService.getList().subscribe((res)=>{
+      this.products = res;
+    })
+  }
+
+  ngAfterContentChecked(): void {
+    this.isAuth = this.authService.isAuth;
   }
 
   addBasket(product:ProductModel){

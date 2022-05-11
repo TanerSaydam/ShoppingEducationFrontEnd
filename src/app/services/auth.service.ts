@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { Observable,of} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,8 @@ export class AuthService {
     private toastrService:ToastrService
   ) { }
 
-  isAuthenticated(){
-    return this.isAuth;
+  isAuthenticated():Observable<any>{
+    return of(this.isAuth);
   }
 
   login(){
