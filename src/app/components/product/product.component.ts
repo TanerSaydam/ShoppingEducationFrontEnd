@@ -14,6 +14,7 @@ import { ProductService } from 'src/app/services/product.service';
 export class ProductComponent implements OnInit, AfterContentChecked {
   products: ProductModel[];
   isAuth:boolean = false;
+  filterText:string = "";
 
   constructor(
     private toastrService:ToastrService,

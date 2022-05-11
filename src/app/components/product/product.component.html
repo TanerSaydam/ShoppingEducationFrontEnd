@@ -1,5 +1,6 @@
 <div class="row">
-  <div class="col-lg-3 mt-2" *ngFor="let product of products">
+<input class="form-control" [(ngModel)]="filterText" placeholder="Aranacak ürünü yazın">
+  <div class="col-lg-3 mt-2" *ngFor="let product of products | filterProductPipe:filterText">
     <div class="form-group text-center">
       <img
         src="{{ product.imageUrl }}"

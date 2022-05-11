@@ -17,6 +17,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProductAddComponent } from './components/product/product-add/product-add.component';
 import { ProductUpdateComponent } from './components/product/product-update/product-update.component';
+import { FilterProductPipe } from './pipe/filter-product.pipe';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ProductUpdateComponent } from './components/product/product-update/prod
     FooterComponent,
     ProductAddComponent,
     NotFoundComponent,
-    ProductUpdateComponent
+    ProductUpdateComponent,
+    FilterProductPipe
   ],
   imports: [
     BrowserModule,
