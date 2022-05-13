@@ -1,24 +1,52 @@
+
+<app-spinner></app-spinner>
+
 <div class="row">
-<input class="form-control" [(ngModel)]="filterText" placeholder="Aranacak ürünü yazın">
-  <div class="col-lg-3 mt-2" *ngFor="let product of products | filterProductPipe:filterText">
+  <input
+    class="form-control"
+    [(ngModel)]="filterText"
+    placeholder="Aranacak ürünü yazın"
+  />
+  <div
+    class="col-lg-3 mt-2"
+    *ngFor="let product of products | filterProductPipe: filterText"
+  >
     <div class="form-group text-center">
-      <img
-        src="{{ product.imageUrl }}"
-        style="width: 200px; height:200px">
+      <img src="{{ product.imageUrl }}" style="width: 200px; height: 200px" />
       <h3>{{ product.name }}</h3>
-      <h4 class="text-danger">{{ product.price | currency: 'TRY': 'symbol-narrow':'1.2-2' }}</h4>
+      <h4 class="text-danger">
+        {{ product.price | currency: "TRY":"symbol-narrow":"1.2-2" }}
+      </h4>
       <div class="form-group">
         <div class="row">
           <div class="col-md-4"></div>
           <div class="col-md-4">
-            <input type="number" min="1" id="quantity-{{ product.name }}" class="form-control" style="font-weight: 700;" value="1">
+            <input
+              type="number"
+              min="1"
+              id="quantity-{{ product.name }}"
+              class="form-control"
+              style="font-weight: 700"
+              value="1"
+            />
           </div>
           <div class="col-md-4"></div>
         </div>
       </div>
-      <button *ngIf="!isAuth" class="btn btn-primary mt-2" (click)="addBasket(product)">Sepete Ekle</button>
-      <button  *ngIf="isAuth" class="btn btn-warning mt-2 mx-2" routerLink="/product-update/{{ product.id }}">Ürünü Güncelle</button>
+      <button
+        *ngIf="!isAuth"
+        class="btn btn-primary mt-2"
+        (click)="addBasket(product)"
+      >
+        Sepete Ekle
+      </button>
+      <button
+        *ngIf="isAuth"
+        class="btn btn-warning mt-2 mx-2"
+        routerLink="/product-update/{{ product.id }}"
+      >
+        Ürünü Güncelle
+      </button>
     </div>
   </div>
-
 </div>

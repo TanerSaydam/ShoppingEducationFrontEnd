@@ -6,7 +6,12 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class FilterProductPipe implements PipeTransform {
 
   transform(value: any[], filterTexT:string): any[] {
-    return value.filter(p=> p.name.toLowerCase().indexOf(filterTexT.toLowerCase())!==-1);
+    try {
+      return value.filter(p=> p.name.toLowerCase().indexOf(filterTexT.toLowerCase())!==-1);
+    } catch (error) {
+      return value;
+    }
+
   }
 
 }

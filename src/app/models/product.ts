@@ -4,4 +4,5 @@ export class ProductModel{
   inventoryQuantity:number;
   price:number;
   imageUrl:string;
+  codeGuid:string;
 }

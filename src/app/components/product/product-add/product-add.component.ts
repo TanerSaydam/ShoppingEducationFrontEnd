@@ -1,5 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
+import { NgxSpinnerService } from "ngx-spinner";
+import { ToastrService } from "ngx-toastr";
 import { ProductModel } from "src/app/models/product";
 import { ProductService } from "src/app/services/product.service";
 
@@ -11,16 +14,14 @@ import { ProductService } from "src/app/services/product.service";
 
 export class ProductAddComponent implements OnInit {
 
-  // @ViewChild("inputName") name:ElementRef;
-  // @ViewChild("inputQuantity") quantity:ElementRef;
-  // @ViewChild("inputPrice") price:ElementRef;
-  // @ViewChild("inputImage") image:ElementRef;
-
   addForm: FormGroup
 
   constructor(
     private productService: ProductService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private spinner:NgxSpinnerService,
+    private toastrService:ToastrService,
+    private router:Router
   ) { }
 
   ngOnInit(): void {
@@ -33,15 +34,25 @@ export class ProductAddComponent implements OnInit {
       'inventoryQuantity': [0, [Validators.required, Validators.min(1)]],
       'price': [, [Validators.required, Validators.min(1)]],
       'imageUrl': [, [Validators.required, Validators.minLength(5)]],
+      "codeGuid": ['']
     })
   }
 
   add() {
-    if (this.addForm.valid) {
-      let status: Boolean = this.productService.add(this.addForm.value);
-      if (status) {
-        this.addForm.reset();
-      }
-    }
+    this.spinner.show();
+   if (this.addForm.valid) {
+    let model:ProductModel = this.addForm.value;
+    this.productService.add(model).subscribe((res)=>{
+      this.spinner.hide();
+      this.router.navigate(["/"]);
+      this.toastrService.success(res.message);
+    },(err)=>{
+      this.spinner.hide();
+      console.log(err)
+    })
+   }else{
+    this.spinner.hide();
+    this.toastrService.error("Zorunlu alanları doldurun");
+   }
   }
 }

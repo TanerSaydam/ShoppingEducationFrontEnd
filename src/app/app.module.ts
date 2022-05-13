@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,6 +19,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProductAddComponent } from './components/product/product-add/product-add.component';
 import { ProductUpdateComponent } from './components/product/product-update/product-update.component';
 import { FilterProductPipe } from './pipe/filter-product.pipe';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { LoginComponent } from './components/login/login.component';
+import { SpinnerComponent } from './components/layouts/spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +37,9 @@ import { FilterProductPipe } from './pipe/filter-product.pipe';
     ProductAddComponent,
     NotFoundComponent,
     ProductUpdateComponent,
-    FilterProductPipe
+    FilterProductPipe,
+    LoginComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -41,6 +47,8 @@ import { FilterProductPipe } from './pipe/filter-product.pipe';
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    HttpClientModule,
+    NgxSpinnerModule,
     ToastrModule.forRoot({
       closeButton:true,
       progressBar:true,

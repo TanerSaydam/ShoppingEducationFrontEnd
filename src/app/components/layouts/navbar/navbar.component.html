@@ -13,38 +13,30 @@
             Ana Sayfa
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="isAuth">
           <a class="nav-link" routerLink="/product-add">
             <i class="fa-solid fa-square-plus"></i>
             Ürün Ekle
           </a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+        <li class="nav-item" *ngIf="!isAuth">
+          <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
             aria-expanded="false">
-            <i class="fa-solid fa-basket-shopping"></i>
-            Sepetimiz
+            <li class="text-danger">
+             Ödenecek Tutar:
+              {{ total | currency:'TRY':'symbol-narrow':'1.2-2'}}
+            </li>
           </a>
-          <ul class="dropdown-menu text-danger" aria-labelledby="navbarDropdown">
-            <a routerLink="/">
-              <li [innerText]="'Ödenecek Tutar'"></li>
-              <li [innerText]="total | currency:'TRY':'symbol-narrow':'1.2-2'"></li>
-            </a>
-          </ul>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="!isAuth">
           <a class="nav-link" routerLink="/orders">
             <i class="fa-solid fa-clipboard-list"></i>
             Siparişler
           </a>
         </li>
       </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Aranacak ürün">
-        <button class="btn btn-outline-success" type="submit">Ara</button>
-      </form>
       <form class="d-flex mx-4">
-        <button *ngIf="!isAuth" class="btn btn-primary" (click)="login()">
+        <button *ngIf="!isAuth" class="btn btn-primary" routerLink="/login">
           <i class="fa-solid fa-right-to-bracket"></i>
           Giriş Yap
         </button>

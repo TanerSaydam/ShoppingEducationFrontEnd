@@ -1,4 +1,4 @@
-import { AfterContentChecked, Component, OnInit } from "@angular/core";
+import { AfterContentChecked, AfterContentInit, Component, DoCheck, OnChanges, OnDestroy, OnInit, SimpleChanges } from "@angular/core";
 import { BasketModel } from "src/app/models/basket";
 import { AuthService } from "src/app/services/auth.service";
 
@@ -7,7 +7,7 @@ import { AuthService } from "src/app/services/auth.service";
   templateUrl: './home.component.html'
 })
 
-export class HomeComponent implements OnInit, AfterContentChecked{
+export class HomeComponent implements OnInit{
   isAuth:boolean = false;
 
   constructor(
@@ -15,14 +15,12 @@ export class HomeComponent implements OnInit, AfterContentChecked{
   ){}
 
   ngOnInit(): void {
-    console.log(this.isAuth)
-    this.authService.isAuthenticated().subscribe((res)=>{
-      console.log(res)
-      this.isAuth = res
-    })
+    this.isAuth = this.authService.isAuthenticated();
   }
 
   ngAfterContentChecked(): void {
-    this.isAuth = this.authService.isAuth;
+    //console.log("ngAfterContentChecked çalışıyor")
+    this.isAuth = this.authService.isAuthenticated();
   }
+
 }

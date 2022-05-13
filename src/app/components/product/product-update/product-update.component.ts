@@ -38,30 +38,30 @@ export class ProductUpdateComponent implements OnInit {
   }
 
   getById(){
-    //let id = +this.activatedRoute.snapshot.params["id"];
-    let id:number = 0;
-    this.activatedRoute.params.subscribe((params)=>{
-       id = params["id"];
-    })
-    this.productService.getById(id).subscribe((res)=>{
-      this.productModel = res
-      this.updateForm.controls["id"].setValue(res.id);
-      this.updateForm.controls["name"].setValue(res.name);
-      this.updateForm.controls["inventoryQuantity"].setValue(res.inventoryQuantity);
-      this.updateForm.controls["price"].setValue(res.price);
-      this.updateForm.controls["imageUrl"].setValue(res.imageUrl);
-    },(err)=>{
-      console.log(err);
-    });
+    // //let id = +this.activatedRoute.snapshot.params["id"];
+    // let id:number = 0;
+    // this.activatedRoute.params.subscribe((params)=>{
+    //    id = params["id"];
+    // })
+    // this.productService.getById(id).subscribe((res)=>{
+    //   this.productModel = res
+    //   this.updateForm.controls["id"].setValue(res.id);
+    //   this.updateForm.controls["name"].setValue(res.name);
+    //   this.updateForm.controls["inventoryQuantity"].setValue(res.inventoryQuantity);
+    //   this.updateForm.controls["price"].setValue(res.price);
+    //   this.updateForm.controls["imageUrl"].setValue(res.imageUrl);
+    // },(err)=>{
+    //   console.log(err);
+    // });
   }
 
   update(){
-    if (this.updateForm.valid) {
-      this.productService.update(this.updateForm.value);
-      this.router.navigate(["/"]);
-    }else{
-      console.log("Girilen bilgiler eksik");
-    }
+    // if (this.updateForm.valid) {
+    //   this.productService.update(this.updateForm.value);
+    //   this.router.navigate(["/"]);
+    // }else{
+    //   console.log("Girilen bilgiler eksik");
+    // }
   }
 
 }

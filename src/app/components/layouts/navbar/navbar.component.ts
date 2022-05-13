@@ -1,4 +1,4 @@
-import { AfterContentChecked, Component, OnInit } from '@angular/core';
+import { AfterContentChecked, AfterViewInit, Component, OnInit } from '@angular/core';
 import { BasketModel } from 'src/app/models/basket';
 import { AuthService } from 'src/app/services/auth.service';
 import { BasketService } from 'src/app/services/basket.service';
@@ -8,7 +8,7 @@ import { BasketService } from 'src/app/services/basket.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit, AfterContentChecked {
+export class NavbarComponent implements OnInit, AfterContentChecked, AfterContentChecked {
 
   baskets:BasketModel[] = [];
   total:number = 0;
@@ -21,19 +21,17 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
 
   ngOnInit(): void {
     this.baskets = this.basketService.baskets;
-    this.isAuth = this.authService.isAuth;
+    this.isAuth = this.authService.isAuthenticated();
   }
 
   ngAfterContentChecked(): void {
     this.total = this.basketService.total;
-    this.isAuth = this.authService.isAuth;
+    this.isAuth = this.authService.isAuthenticated();
   }
 
-  login(){
-    this.authService.login();
-  }
 
   logout(){
     this.authService.logout();
+    this.isAuth = this.authService.isAuthenticated();
   }
 }
