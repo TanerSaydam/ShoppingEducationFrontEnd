@@ -1,3 +1,4 @@
+
 <div class="container">
   <h3>Ürün Güncelleme Sayfası</h3>
   <form (ngSubmit)="update()" [formGroup]="updateForm">
@@ -18,13 +19,22 @@
         </div>
         <div class="mb-3">
           <label for="exampleFormControlInput1" class="form-label">Ürün Resmi</label>
-          <input type="text" formControlName="imageUrl" class="form-control">
+          <input type="text" [(ngModel)]="img" formControlName="imageUrl" class="form-control">
         </div>
       </div>
       <div class="form-group text-center">
         <button class="btn btn-warning btn-lg" type="submit">Ürünü Güncelle</button>
+        <button class="btn btn-danger btn-lg mx-4" [swal]="deleteSwal" (confirm)="deleteProduct()" type="button">Ürünü Sil</button>
       </div>
     </div>
   </div>
 </form>
+<hr>
+<div *ngIf="img" class="form-group text-center">
+  <img [src]="img" width="400" height="400" >
 </div>
+
+</div>
+
+<swal #deleteSwal title="Sil?" text="Ürünü silmek istiyor musunuz?" type="question" [showCancelButton]="true"
+[focusCancel]="true" [swalOptions]="{ confirmButtonText: 'Sil', cancelButtonText:'Vazgeç'  }"></swal>

@@ -18,7 +18,7 @@
         </div>
         <div class="mb-3">
           <label for="exampleFormControlInput1" class="form-label">Ürün Resmi</label>
-          <input type="text" formControlName="imageUrl" class="form-control">
+          <input type="text" [(ngModel)]="img" formControlName="imageUrl" class="form-control">
         </div>
       </div>
       <div class="form-group text-center">
@@ -27,4 +27,8 @@
     </div>
   </div>
 </form>
+<hr>
+<div *ngIf="img" class="form-group text-center">
+  <img [src]="img" width="400" height="400" >
+</div>
 </div>

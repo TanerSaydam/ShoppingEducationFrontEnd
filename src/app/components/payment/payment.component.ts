@@ -24,7 +24,7 @@ export class PaymentComponent implements OnInit, AfterContentChecked {
   }
 
   payment(){
-    this.basketService.payment(this.total);
+    // this.basketService.payment(this.total);
     document.getElementById("paymentModalCloseBtn").click();
   }
 }

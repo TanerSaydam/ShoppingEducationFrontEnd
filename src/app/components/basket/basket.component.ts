@@ -1,7 +1,10 @@
+import { ThisReceiver } from '@angular/compiler';
 import { AfterContentChecked, AfterViewChecked, AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { BasketModel } from 'src/app/models/basket';
 import { BasketService } from 'src/app/services/basket.service';
+import { ProductService } from 'src/app/services/product.service';
 
 @Component({
   selector: 'app-basket',
@@ -15,23 +18,61 @@ export class BasketComponent implements OnInit, AfterContentChecked {
 
   constructor(
     private toastrService: ToastrService,
-    private basketService: BasketService
+    private basketService: BasketService,
+    private spinnerService:NgxSpinnerService,
+    private productService:ProductService
   ) { }
 
   ngOnInit(): void {
-    this.baskets = this.basketService.baskets;
+    this.geList();
   }
 
   ngAfterContentChecked(): void {
+    this.baskets = this.basketService.baskets;
     this.total = this.basketService.total
   }
 
-  deleteProduct(basket: BasketModel) {
-    this.basketService.deleteProduct(basket);
+  geList(){
+    this.basketService.getList()
+  }
+
+  updateBasket(basket: BasketModel, quantity:number) {
+    if ((basket.quantity + quantity) <= 0) {
+      this.toastrService.error("Sepetteki ürün adedi 1'den daha düşük olamaz")
+      return;
+    }
+
+    if (basket.product.inventoryQuantity - quantity < 0) {
+      this.toastrService.error("Eklemek istediğiniz adet, ürün adedinden fazla olamaz!")
+      return;
+    }
+    basket.quantity = basket.quantity + quantity;
+
+    this.spinnerService.show();
+    this.basketService.update(basket).subscribe((res)=>{
+      this.geList();
+      this.spinnerService.hide();
+      this.productService.getList();
+    },(err)=>{
+      this.spinnerService.hide();
+      console.log(err);
+    })
+  }
+
+  deleteBasket(basket: BasketModel) {
+    this.spinnerService.show();
+    this.basketService.delete(basket).subscribe((res)=>{
+      this.spinnerService.hide();
+      this.productService.getList();
+      this.geList();
+    },(err)=>{
+      this.spinnerService.hide();
+      console.log(err);
+    })
   }
 
   changeData(basket: BasketModel, quantity:any) {
-    this.basketService.changeData(basket, quantity.value);
+    // this.basketService.changeData(basket, quantity.value);
   }
 
 

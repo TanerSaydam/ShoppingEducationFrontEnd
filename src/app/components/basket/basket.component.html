@@ -1,3 +1,4 @@
+
 <h3 class="text-center text-success">Sepetiniz</h3>
 <hr>
 <table class="table">
@@ -14,9 +15,27 @@
   <tr *ngFor="let basket of baskets let index = index">
     <td>{{ index +1 }}</td>
     <td>{{ basket.product.name }}</td>
-    <td><input type="number" id="basketQuantity-{{ basket.product.name }}" #inputQuantity (click)="changeData(basket, inputQuantity)" min="1" class="form-control" [value]="basket.quantity"></td>
+    <td>
+      <button (click)="updateBasket(basket, 1)" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i></button>
+      <label
+      class="label-control mx-2"
+      id="basketQuantity-{{ basket.product.name }}"
+      #labelQuantity
+      [innerText]="basket.quantity"
+      >
+    </label>
+    <button (click)="updateBasket(basket, -1)" class="btn btn-sm btn-danger"><i class="fa fa-minus"></i></button>
+      <!-- <input
+      type="number"
+      id="basketQuantity-{{ basket.product.name }}"
+      #inputQuantity
+      (click)="updateBasket(basket, inputQuantity)"
+      min="1"
+      class="form-control"
+      [value]="basket.quantity"> -->
+    </td>
     <td>{{ (basket.quantity * basket.product.price) | currency: 'TRY': 'symbol-narrow':'1.2-2' }}</td>
-    <td><button class="btn btn-sm btn-danger" (click)="deleteProduct(basket)">Sil</button></td>
+    <td><button class="btn btn-sm btn-danger" [swal]="deleteSwal" (confirm)="deleteBasket(basket)">Sil</button></td>
   </tr>
 </tbody>
 <tfoot>
@@ -35,3 +54,5 @@
 
 <app-payment></app-payment>
 
+<swal #deleteSwal title="Sil?" text="Sepetteki ürünü silmek istiyor musunuz?" type="question" [showCancelButton]="true"
+[focusCancel]="true" [swalOptions]="{ confirmButtonText: 'Sil', cancelButtonText:'Vazgeç'  }"></swal>

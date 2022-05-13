@@ -2,6 +2,8 @@ import { LEADING_TRIVIA_CHARS } from '@angular/compiler/src/render3/view/templat
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 import { ProductModel } from 'src/app/models/product';
 import { ProductService } from 'src/app/services/product.service';
 
@@ -14,12 +16,15 @@ export class ProductUpdateComponent implements OnInit {
 
   updateForm: FormGroup
   productModel:ProductModel;
+  img:string = "";
 
   constructor(
     private formBuilder:FormBuilder,
     private activatedRoute:ActivatedRoute,
     private productService:ProductService,
-    private router:Router
+    private router:Router,
+    private spinner:NgxSpinnerService,
+    private toastrService:ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -34,34 +39,56 @@ export class ProductUpdateComponent implements OnInit {
       'inventoryQuantity': [0, [Validators.required, Validators.min(1)]],
       'price': [, [Validators.required, Validators.min(1)]],
       'imageUrl': [, [Validators.required, Validators.minLength(5)]],
+      'codeGuid': [""],
     })
   }
 
   getById(){
-    // //let id = +this.activatedRoute.snapshot.params["id"];
-    // let id:number = 0;
-    // this.activatedRoute.params.subscribe((params)=>{
-    //    id = params["id"];
-    // })
-    // this.productService.getById(id).subscribe((res)=>{
-    //   this.productModel = res
-    //   this.updateForm.controls["id"].setValue(res.id);
-    //   this.updateForm.controls["name"].setValue(res.name);
-    //   this.updateForm.controls["inventoryQuantity"].setValue(res.inventoryQuantity);
-    //   this.updateForm.controls["price"].setValue(res.price);
-    //   this.updateForm.controls["imageUrl"].setValue(res.imageUrl);
-    // },(err)=>{
-    //   console.log(err);
-    // });
+    this.spinner.show();
+    let guid:string = "";
+    this.activatedRoute.params.subscribe((params)=>{
+       guid = params["value"];
+    })
+    this.productService.getById(guid).subscribe((res)=>{
+      this.spinner.hide();
+      this.productModel = res.data
+      this.updateForm.controls["id"].setValue(res.data.id);
+      this.updateForm.controls["name"].setValue(res.data.name);
+      this.updateForm.controls["inventoryQuantity"].setValue(res.data.inventoryQuantity);
+      this.updateForm.controls["price"].setValue(res.data.price);
+      this.updateForm.controls["imageUrl"].setValue(res.data.imageUrl);
+      this.updateForm.controls["codeGuid"].setValue(res.data.codeGuid);
+    },(err)=>{
+      this.spinner.hide();
+      console.log(err);
+    });
   }
 
   update(){
-    // if (this.updateForm.valid) {
-    //   this.productService.update(this.updateForm.value);
-    //   this.router.navigate(["/"]);
-    // }else{
-    //   console.log("Girilen bilgiler eksik");
-    // }
+    if (this.updateForm.valid) {
+      this.productService.update(this.updateForm.value).subscribe((res)=>{
+        this.spinner.hide();
+        this.router.navigate(["/"]);
+        this.toastrService.info(res.message);
+      },(err)=>{
+        this.spinner.hide();
+      });
+    }else{
+      this.spinner.hide();
+      this.toastrService.error("Zorunlu alanları doldurun");
+    }
+  }
+
+  deleteProduct(){
+    this.spinner.show();
+    this.productService.delete(this.updateForm.value).subscribe((res)=>{
+      this.spinner.hide();
+      this.router.navigate(["/"]);
+      this.toastrService.warning(res.message);
+    },(err)=>{
+      this.spinner.hide();
+      console.log(err);
+    });
   }
 
 }

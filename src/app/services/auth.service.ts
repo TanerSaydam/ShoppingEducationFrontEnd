@@ -29,10 +29,9 @@ export class AuthService {
   }
 
   login(loginModel:Login):boolean{
-    //let api = "https://webapi.angulareducation.com/api/users/login";
-    let api = "https://localhost:44343/api/Users/login"
+    let api = "https://webapi.angulareducation.com/api/users/login";
     this.httpClient.post<SingleResponseModel<TokenModel>>(api,loginModel).subscribe((res)=>{
-      console.log(res.data)
+      //console.log(res.data)
       localStorage.setItem("token", res.data.token)
       this.toastrService.success(res.message);
       this.isAuth = true;

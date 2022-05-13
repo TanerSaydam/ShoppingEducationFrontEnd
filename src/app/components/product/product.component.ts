@@ -30,35 +30,44 @@ export class ProductComponent implements OnInit, AfterContentChecked {
   ) {}
 
   ngOnInit(): void {
+    //this.isAuth = this.authService.isAuthenticated();
     this.getList();
   }
 
   ngAfterContentChecked(): void {
-    this.isAuth = this.authService.isAuth;
+    this.isAuth = this.authService.isAuthenticated();
+    this.products = this.productService.products;
   }
 
   getList(){
-    this.spinner.show();
-    this.productService.getList().subscribe((res)=>{
-      //console.log(res)
-      this.spinner.hide();
-      this.products = res.data;
-    },(err)=>{
-      this.spinner.hide();
-      if (err.status == "404") {
-        this.toastrService.error(err.statusText)
-      }else{
-        console.log(err);
-      }
-    })
+    this.productService.getList();
   }
 
   addBasket(product:ProductModel){
+    let quantity:number = parseInt((<HTMLInputElement>document.getElementById("quantity-" + product.name)).value);
+    if (product.inventoryQuantity < quantity) {
+      this.toastrService.error("Eklemek istediğiniz adet, ürün adedinden fazla olamaz!")
+      return;
+    }
+
+    this.spinner.show();
+
     let basketModel = new BasketModel();
     basketModel.product = product;
-    basketModel.quantity = parseInt((<HTMLInputElement>document.getElementById("quantity-" + product.name)).value);
+    basketModel.productId = product.id;
+    basketModel.quantity = quantity;
     (<HTMLInputElement>document.getElementById("quantity-" + product.name)).value = "1"
 
-    this.basketService.addBasket(basketModel);
+    this.basketService.add(basketModel).subscribe((res)=>{
+      this.spinner.hide();
+      this.toastrService.info(res.message)
+      this.basketService.getList();
+      this.getList();
+    },(err)=>{
+      this.spinner.hide();
+      console.log(err);
+    })
+
+    // this.basketService.addBasket(basketModel);
   }
 }

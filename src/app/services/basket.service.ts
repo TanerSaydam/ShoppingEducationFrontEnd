@@ -1,7 +1,11 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
 import { BasketModel } from '../models/basket';
+import { ListReponseModel } from '../models/listResponseModel';
 import { OrderModel } from '../models/order';
+import { ResponseModel } from '../models/responseModel';
 import { OrderService } from './order.service';
 
 @Injectable({
@@ -14,26 +18,34 @@ export class BasketService {
 
   constructor(
     private toastrService:ToastrService,
-    private orderService:OrderService
+    private orderService:OrderService,
+    private httpClient:HttpClient
   ) { }
 
-  addBasket(model:BasketModel){
-    let basketModel:BasketModel[] = this.baskets.filter(p=> p.product == model.product);
-    if (basketModel.length > 0) {
-      model.quantity = basketModel[0].quantity + model.quantity;
-      this.changeData(basketModel[0],model.quantity);
-    }else{
-      this.baskets.push(model);
-      this.toastrService.info("Ürün başarıyla sepete eklendi");
+  getList(){
+    let api = "https://webapi.angulareducation.com/api/baskets/getlist";
+    this.httpClient.get<ListReponseModel<BasketModel>>(api).subscribe((res)=>{
+      this.baskets = res.data
       this.calc();
-    }
+    },(err)=>{
+      console.log(err)
+    })
+    //return this.httpClient.get<ListReponseModel<BasketModel>>(api);
   }
 
-  deleteProduct(basket:BasketModel){
-    let index = this.baskets.indexOf(basket);
-    this.baskets.splice(index,1);
-    this.toastrService.info(basket.product.name + " ürün sepetinizden başarıyla silindi");
-    this.calc();
+  add(model:BasketModel):Observable<ResponseModel>{
+    let api = "https://webapi.angulareducation.com/api/baskets/add";
+    return this.httpClient.post<ResponseModel>(api,model);
+  }
+
+  update(model:BasketModel):Observable<ResponseModel>{
+    let api = "https://webapi.angulareducation.com/api/baskets/update";
+    return this.httpClient.post<ResponseModel>(api,model);
+  }
+
+  delete(model:BasketModel):Observable<ResponseModel>{
+    let api = "https://webapi.angulareducation.com/api/baskets/delete";
+    return this.httpClient.post<ResponseModel>(api,model);
   }
 
   calc(){
@@ -44,25 +56,25 @@ export class BasketService {
     });
   }
 
-  changeData(basket:BasketModel, quantity:number){
-    let index = this.baskets.indexOf(basket);
-    this.baskets[index].quantity = quantity;
-    // this.baskets.splice(index,1);
-    // basket.quantity = quantity;
-    // this.baskets.push(basket);
-    this.calc();
-  }
+  // changeData(basket:BasketModel, quantity:number){
+  //   let index = this.baskets.indexOf(basket);
+  //   this.baskets[index].quantity = quantity;
+  //   // this.baskets.splice(index,1);
+  //   // basket.quantity = quantity;
+  //   // this.baskets.push(basket);
+  //   this.calc();
+  // }
 
 
 
-  payment(total:number){
-    if (this.total == total) {
-      let count = this.baskets.length;
-      this.orderService.addOrder(this.baskets);
-      //this.baskets.splice(0,count);
-      this.toastrService.info("Ödeme başarılı. Siparişiniz sevk aşamasına geçti");
-    }
-    this.calc();
-  }
+  // payment(total:number){
+  //   if (this.total == total) {
+  //     let count = this.baskets.length;
+  //     this.orderService.addOrder(this.baskets);
+  //     //this.baskets.splice(0,count);
+  //     this.toastrService.info("Ödeme başarılı. Siparişiniz sevk aşamasına geçti");
+  //   }
+  //   this.calc();
+  // }
 
 }

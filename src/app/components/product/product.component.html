@@ -1,6 +1,4 @@
 
-<app-spinner></app-spinner>
-
 <div class="row">
   <input
     class="form-control"
@@ -17,7 +15,8 @@
       <h4 class="text-danger">
         {{ product.price | currency: "TRY":"symbol-narrow":"1.2-2" }}
       </h4>
-      <div class="form-group">
+      <p><strong>Kalan : {{ product.inventoryQuantity }}</strong></p>
+      <div class="form-group" *ngIf="product.inventoryQuantity>0">
         <div class="row">
           <div class="col-md-4"></div>
           <div class="col-md-4">
@@ -28,13 +27,14 @@
               class="form-control"
               style="font-weight: 700"
               value="1"
+              [max]="product.inventoryQuantity"
             />
           </div>
           <div class="col-md-4"></div>
         </div>
       </div>
       <button
-        *ngIf="!isAuth"
+        *ngIf="!isAuth && product.inventoryQuantity>0"
         class="btn btn-primary mt-2"
         (click)="addBasket(product)"
       >
@@ -43,7 +43,7 @@
       <button
         *ngIf="isAuth"
         class="btn btn-warning mt-2 mx-2"
-        routerLink="/product-update/{{ product.id }}"
+        routerLink="/product-update/{{ product.codeGuid }}"
       >
         Ürünü Güncelle
       </button>

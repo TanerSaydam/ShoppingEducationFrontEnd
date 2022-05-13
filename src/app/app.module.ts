@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http'
+import { SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -49,6 +50,7 @@ import { SpinnerComponent } from './components/layouts/spinner/spinner.component
     BrowserAnimationsModule,
     HttpClientModule,
     NgxSpinnerModule,
+    SweetAlert2Module.forRoot(),
     ToastrModule.forRoot({
       closeButton:true,
       progressBar:true,

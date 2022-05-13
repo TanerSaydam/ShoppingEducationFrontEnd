@@ -13,7 +13,7 @@ const routes: Routes = [
   { path:'', component: LayoutsComponent, children:[
     { path:'', component:HomeComponent},
     { path:'product-add', canActivate:[AuthGuard],component:ProductAddComponent},
-    { path:'product-update/:id', canActivate:[AuthGuard],component:ProductUpdateComponent},
+    { path:'product-update/:value', canActivate:[AuthGuard],component:ProductUpdateComponent},
     { path: 'orders', component:OrderComponent},
     { path:'login', component:LoginComponent}
   ]},

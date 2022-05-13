@@ -15,6 +15,7 @@ import { ProductService } from "src/app/services/product.service";
 export class ProductAddComponent implements OnInit {
 
   addForm: FormGroup
+  img:string = "";
 
   constructor(
     private productService: ProductService,
