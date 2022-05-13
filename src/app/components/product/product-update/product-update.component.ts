@@ -1,10 +1,11 @@
 import { LEADING_TRIVIA_CHARS } from '@angular/compiler/src/render3/view/template';
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { ProductModel } from 'src/app/models/product';
+import { ErrorService } from 'src/app/services/error.service';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -19,12 +20,14 @@ export class ProductUpdateComponent implements OnInit {
   img:string = "";
 
   constructor(
+    @Inject("validError") private validError:string,
     private formBuilder:FormBuilder,
     private activatedRoute:ActivatedRoute,
     private productService:ProductService,
     private router:Router,
     private spinner:NgxSpinnerService,
-    private toastrService:ToastrService
+    private toastrService:ToastrService,
+    private errorService:ErrorService
   ) { }
 
   ngOnInit(): void {
@@ -60,7 +63,7 @@ export class ProductUpdateComponent implements OnInit {
       this.updateForm.controls["codeGuid"].setValue(res.data.codeGuid);
     },(err)=>{
       this.spinner.hide();
-      console.log(err);
+      this.errorService.errorHandler(err);
     });
   }
 
@@ -75,7 +78,7 @@ export class ProductUpdateComponent implements OnInit {
       });
     }else{
       this.spinner.hide();
-      this.toastrService.error("Zorunlu alanları doldurun");
+      this.toastrService.error(this.validError);
     }
   }
 
@@ -87,7 +90,7 @@ export class ProductUpdateComponent implements OnInit {
       this.toastrService.warning(res.message);
     },(err)=>{
       this.spinner.hide();
-      console.log(err);
+      this.errorService.errorHandler(err);
     });
   }
 

@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable,of} from 'rxjs';
 import { Login } from '../models/login';
 import { SingleResponseModel } from '../models/singleResponseModel';
 import { TokenModel } from '../models/token';
+import { ErrorService } from './error.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +16,11 @@ export class AuthService {
   isAuth:boolean = false;
 
   constructor(
+    @Inject("apiUrl") private apiUrl:string,
     private toastrService:ToastrService,
     private httpClient:HttpClient,
-    private router:Router
+    private router:Router,
+    private errorService:ErrorService
   ) { }
 
   isAuthenticated():boolean{
@@ -29,20 +32,15 @@ export class AuthService {
   }
 
   login(loginModel:Login):boolean{
-    let api = "https://webapi.angulareducation.com/api/users/login";
+    let api = this.apiUrl + "users/login";
     this.httpClient.post<SingleResponseModel<TokenModel>>(api,loginModel).subscribe((res)=>{
-      //console.log(res.data)
       localStorage.setItem("token", res.data.token)
       this.toastrService.success(res.message);
       this.isAuth = true;
       this.router.navigate(['/']);
       return true;
     }, (err)=>{
-      if (err.status == "400") {
-        this.toastrService.error(err.error);
-      }else{
-        console.log(err)
-      }
+      this.errorService.errorHandler(err);
       return false;
     });
     return false;

@@ -1,9 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { Component, ElementRef, Inject, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
 import { ProductModel } from "src/app/models/product";
+import { ErrorService } from "src/app/services/error.service";
 import { ProductService } from "src/app/services/product.service";
 
 @Component({
@@ -18,11 +19,13 @@ export class ProductAddComponent implements OnInit {
   img:string = "";
 
   constructor(
+    @Inject("validError") private validError:string,
     private productService: ProductService,
     private formBuilder: FormBuilder,
     private spinner:NgxSpinnerService,
     private toastrService:ToastrService,
-    private router:Router
+    private router:Router,
+    private errorService:ErrorService
   ) { }
 
   ngOnInit(): void {
@@ -49,11 +52,11 @@ export class ProductAddComponent implements OnInit {
       this.toastrService.success(res.message);
     },(err)=>{
       this.spinner.hide();
-      console.log(err)
+      this.errorService.errorHandler(err);
     })
    }else{
     this.spinner.hide();
-    this.toastrService.error("Zorunlu alanları doldurun");
+    this.toastrService.error(this.validError);
    }
   }
 }

@@ -23,6 +23,7 @@ import { FilterProductPipe } from './pipe/filter-product.pipe';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { LoginComponent } from './components/login/login.component';
 import { SpinnerComponent } from './components/layouts/spinner/spinner.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,11 @@ import { SpinnerComponent } from './components/layouts/spinner/spinner.component
       positionClass:"toast-bottom-right"
     })
   ],
-  providers: [],
+  providers: [
+    { provide: 'apiUrl', useValue: 'https://webapi.angulareducation.com/api/'},
+    { provide: 'validError', useValue: 'Zorunlu alanları doldurun'},
+    { provide: HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

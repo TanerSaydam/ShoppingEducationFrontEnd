@@ -20,8 +20,7 @@
           </a>
         </li>
         <li class="nav-item" *ngIf="!isAuth">
-          <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-            aria-expanded="false">
+          <a class="nav-link" routerLink="/" id="navbarDropdown" role="button">
             <li class="text-danger">
              Ödenecek Tutar:
               {{ total | currency:'TRY':'symbol-narrow':'1.2-2'}}

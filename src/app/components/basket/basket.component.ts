@@ -4,6 +4,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { BasketModel } from 'src/app/models/basket';
 import { BasketService } from 'src/app/services/basket.service';
+import { ErrorService } from 'src/app/services/error.service';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -20,7 +21,8 @@ export class BasketComponent implements OnInit, AfterContentChecked {
     private toastrService: ToastrService,
     private basketService: BasketService,
     private spinnerService:NgxSpinnerService,
-    private productService:ProductService
+    private productService:ProductService,
+    private errorService:ErrorService
   ) { }
 
   ngOnInit(): void {
@@ -55,7 +57,7 @@ export class BasketComponent implements OnInit, AfterContentChecked {
       this.productService.getList();
     },(err)=>{
       this.spinnerService.hide();
-      console.log(err);
+      this.errorService.errorHandler(err);
     })
   }
 
@@ -67,13 +69,7 @@ export class BasketComponent implements OnInit, AfterContentChecked {
       this.geList();
     },(err)=>{
       this.spinnerService.hide();
-      console.log(err);
+      this.errorService.errorHandler(err);
     })
   }
-
-  changeData(basket: BasketModel, quantity:any) {
-    // this.basketService.changeData(basket, quantity.value);
-  }
-
-
 }
